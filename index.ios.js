@@ -12,5 +12,4 @@ import {
   View
 } from 'react-native';
 import App from "./dist/App";
-
 AppRegistry.registerComponent('syncle', () => App);
