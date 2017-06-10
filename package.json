@@ -10,10 +10,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.65",
     "react": "16.0.0-alpha.6",
-    "react-native": "0.44.0"
+    "react-native": "0.44.0",
+    "ts-node": "^3.0.6"
   },
   "devDependencies": {
+    "@types/node": "^7.0.22",
     "@types/react": "^15.0.24",
     "@types/react-dom": "^15.5.0",
     "@types/react-native": "^0.44.3",

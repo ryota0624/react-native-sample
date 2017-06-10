@@ -1,0 +1,28 @@
+@startuml
+
+class Tag {
+    name
+    loveLevel
+    followed
+}
+
+class Topic {
+    name
+    describe
+    followed
+}
+
+class User {
+    name
+    followTag()
+    unFollowTag()
+    followTopic()
+    unFollowTopic()
+    createTag()
+}
+
+Tag "*" <- "1" User : follow
+Tag "*" <- "1" Topic : association
+Topic "*" <- "1" User : follow
+
+@enduml

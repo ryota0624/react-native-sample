@@ -1,0 +1,29 @@
+@startuml
+
+class Application {
+    state: State
+}
+
+class State
+
+interface View {
+    render(viewModel)
+}
+
+class ReactNative implements View {
+    render(viewModel)
+}
+
+interface Repository {
+}
+
+class Adaptor implements Repository {
+}
+
+
+
+View <- Application : use
+Repository <- Application : use
+
+
+@enduml
