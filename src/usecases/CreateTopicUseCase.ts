@@ -1,10 +1,9 @@
 import {UserID} from "../domains/user/User";
-import {UserRepository} from "../domains/user/UserRepository";
 import {TopicWriteRepository} from "../domains/topic/TopicRepository";
 import {TopicID, Topic, TopicTitle, TopicDescribe, TopicImageUrl} from "../domains/topic/Topic";
 import {UseCase} from "./UseCase";
 import {TagRepository} from "../domains/tag/TagRepository";
-import {ValidationResult, InvalidValidation} from "../../modelingSupport/Entity";
+import {ValidationResult, InvalidValidation} from "../modelingSupport/Entity";
 import {TagName, Tag, LoveLevel} from "../domains/tag/Tag";
 /**
  * Created by ryota on 2017/06/03.
@@ -39,7 +38,7 @@ export interface CreateTopicArgs {
 }
 
 
-export class CreateTopic extends UseCase<CreateTopicArgs, Topic> {
+export class CreateTopicUseCase extends UseCase<CreateTopicArgs, Topic> {
   constructor(private topicRepository: TopicWriteRepository,
               private tagRepository: TagRepository
   ) {
@@ -66,8 +65,4 @@ export class CreateTopic extends UseCase<CreateTopicArgs, Topic> {
     }
     return Promise.resolve(topicEntity);
   }
-}
-
-export interface UseCreateTopic {
-  userFollowTopic: CreateTopic;
 }

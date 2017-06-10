@@ -36,6 +36,12 @@ export class TagRepositoryOnMem extends Repository implements TagRepository {
     return Promise.resolve(tags);
   }
 
+  findUserFollows(): Promise<Tag[]> {
+    return this.findAll().then((tags) => {
+      return tags.filter(tag => tag.loveLevel > LoveLevel.Zero);
+    })
+  }
+
   findTopicTags(topic: TopicID) {
     const tagsP = TopicRepositoryOnMem.topicRelTag.map(([topicId, tagName]) => {
       if (topicId.equals(topic)) {
