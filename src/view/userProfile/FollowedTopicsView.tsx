@@ -2,7 +2,7 @@
  * Created by ryota on 2017/06/10.
  */
 import * as React from "react";
-import {CreatedTopics} from "../../viewModels/userProfile/CreatedTopics";
+import {FollowedTopics} from "../../viewModels/userProfile/FollowedTopics";
 import {
     View, Text, StyleSheet, TextInput, Button, Picker, ListView, ListViewDataSource,
     Dimensions, Animated, TouchableOpacity, ScrollView,
@@ -15,16 +15,16 @@ import TopicRepositoryOnMem from "../../adaptors/Memory/TopicRepositoryOnMem";
 import {ViewContainer} from "../Container";
 
 
-interface CreatedTopicsViewProps {
-    viewModel: Readonly<CreatedTopics>
+interface FollowedTopicsViewProps {
+    viewModel: Readonly<FollowedTopics>
 }
-export function CreatedTopicsView(props: CreatedTopicsViewProps) {
+export function FollowedTopicsView(props: FollowedTopicsViewProps) {
     return (
         <View style={styles.timelineContainer}>
             <View style={styles.statusBar}/>
             <View style={styles.tagHeaderContainer}>
-                <TouchableOpacity style={styles.createdTopicsLabel}>
-                    <Text style={styles.tagText}>{"投稿トピック"}</Text>
+                <TouchableOpacity style={styles.followedTopicsLabel}>
+                    <Text style={styles.tagText}>{"❤️トピック"}</Text>
                 </TouchableOpacity>
                 <Text style={styles.tagTopicsCountText}>{`${props.viewModel.topics.length}トピック`}</Text>
             </View>
@@ -53,20 +53,20 @@ export function TopicView({topic}: { topic: Topic }) {
     );
 }
 
-interface CreatedTopicsViewContainerProps {
-    viewModel: Readonly<CreatedTopics>
+interface FollowedTopicsViewContainerProps {
+    viewModel: Readonly<FollowedTopics>
 }
 
-export class CreatedTopicsViewContainer extends ViewContainer<CreatedTopics, CreatedTopicsViewContainerProps, {}> {
+export class FollowedTopicsViewContainer extends ViewContainer<FollowedTopics, FollowedTopicsViewContainerProps, {}> {
     render() {
         const {viewModel} = this.props;
         return (
-            <CreatedTopicsView viewModel={viewModel}/>
+            <FollowedTopicsView viewModel={viewModel}/>
         );
     }
 }
 
-export class CreatedTopicsImpl extends CreatedTopics {
+export class FollowedTopicsImpl extends FollowedTopics {
     userId = 10;
     userRepository = UserRepositoryOnMem;
     topicRepository = TopicRepositoryOnMem

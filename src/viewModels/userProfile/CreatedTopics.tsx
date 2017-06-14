@@ -1,18 +1,12 @@
-
-
-import {TopicReadRepository, TopicWriteRepository} from "../../domains/topic/TopicRepository";
+import {TopicReadRepository} from "../../domains/topic/TopicRepository";
 import {GetUserCreatedTopicUseCase} from "../../usecases/GetUserCreatedTopicUseCase";
 import {UserRepository} from "../../domains/user/UserRepository";
 import {UseCase} from "../../usecases/UseCase";
-import {ViewModel} from "../ViewModel";
+import {Loading, ViewModel} from "../ViewModel";
 import {Topic} from "../../domains/topic/Topic";
 import {UserFollowTopicUseCase} from "../../usecases/UserFollowTopicUseCase";
 import {UserUnFollowTopicUseCase} from "../../usecases/UserUnFollowTopicUseCase";
 
-enum Loading {
-    Fulfill,
-    Initial
-}
 export abstract class CreatedTopics extends ViewModel {
     abstract topicRepository: TopicReadRepository;
     abstract userRepository: UserRepository;

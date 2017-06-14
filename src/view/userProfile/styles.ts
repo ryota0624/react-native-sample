@@ -24,6 +24,20 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         color: "#ffffff"
     },
+    createdTopicsLabel: {
+        justifyContent: "center",
+        alignItems: "center",
+        width: 150,
+        height: 28,
+        backgroundColor: "#dd6fa1"
+    },
+    followedTopicsLabel: {
+        justifyContent: "center",
+        alignItems: "center",
+        width: 120,
+        height: 28,
+        backgroundColor: "#dd6fa1"
+    },
     tagContainer: {
         justifyContent: "center",
         alignItems: "center",
@@ -42,6 +56,24 @@ export const styles = StyleSheet.create({
     topicsContainer: {
         flexDirection: "row",
         flexWrap: "wrap"
+    },
+    loveTagLevelZeroContainer: {
+        fontSize: 10,
+        height: 30,
+    },
+
+    loveTagLevelOneContainer: {
+        fontSize: 15,
+        height: 30,
+    },
+    loveTagLevelTwoContainer: {
+        fontSize: 30,
+        height: 30,
+    },
+
+    loveTagLevelThreeContainer: {
+        fontSize: 45,
+        height: 30,
     },
 
     topicViewContainer: {

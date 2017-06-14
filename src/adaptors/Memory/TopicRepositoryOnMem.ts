@@ -28,10 +28,12 @@ let topicsMap: Map<number, Topic> = new Map(
   ]
 );
 
-let topicRelTag: [TopicID, TagName][] = [];
+let topicRelTag: [TopicID, TagName][] = [
+    [new TopicID(1), new TagName("お札")]
+];
 
 export class TopicRepositoryOnMem extends Repository implements TopicReadRepository, TopicWriteRepository {
-  static readonly topicRelTag = topicRelTag;
+  static get topicRelTag() { return topicRelTag };
   store(topic: Topic, tagIds: TagName[]) {
     topicsMap.set(topic.id.value, topic);
     tagIds.forEach(tagId => {
@@ -56,6 +58,14 @@ export class TopicRepositoryOnMem extends Repository implements TopicReadReposit
       topics.push(user);
     });
     return Promise.resolve(topics);
+  }
+
+  findByTagName(tagName: TagName) {
+    const topicIds = topicRelTag.filter(([topicId, otherTagName]) => {
+      return tagName.equals(otherTagName);
+    }).map(([topicId]) => topicId);
+    const topicPromises = topicIds.map(this.findById.bind(this));
+    return Promise.all(topicPromises);
   }
 
   findUserFollows(userId: UserID) {

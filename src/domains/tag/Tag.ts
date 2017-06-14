@@ -25,3 +25,11 @@ export class Tag implements Entity<TagName> {
 export function name(tag: Tag) {
   return tag.id.value;
 }
+
+export function updateLoveLevel(tag: Tag) {
+  if (tag.loveLevel < LoveLevel.Three) {
+    return Tag.factory({...tag, loveLevel: tag.loveLevel + 1});
+  }  else {
+    return Tag.factory({...tag, loveLevel: LoveLevel.Zero});
+  }
+}

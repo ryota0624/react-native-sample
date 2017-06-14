@@ -12,12 +12,12 @@ export interface GetFollowTagsArgs {
     userId: number;
 }
 
-export class GetFollowTagsUseCase extends UseCase<GetFollowTagsArgs, Tag[]> {
+export class GetUserLoveTagsUseCase extends UseCase<GetFollowTagsArgs, Tag[]> {
     constructor(private tagRepository: TagRepository) {
         super();
     }
 
     protected doCall({userId}: GetFollowTagsArgs) {
-        return this.tagRepository.findUserFollows(new UserID(userId))
+        return this.tagRepository.findUserLoves(new UserID(userId))
     }
 }

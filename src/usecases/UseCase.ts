@@ -1,8 +1,8 @@
 /**
  * Created by ryota on 2017/06/03.
  */
-import {EventEmitter} from 'events';
-export abstract class UseCase<I, O> {
+import {EventEmitter} from 'eventemitter3';
+export abstract class UseCase<I, O> extends EventEmitter {
   protected onResultListener: ((result: O) => void)[] = [];
   protected onFailListener: ((err: Error) => void)[] = [];
   protected onStartListener: (() => void)[] = [];
@@ -13,6 +13,16 @@ export abstract class UseCase<I, O> {
         usecase.emitResult(result);
       }).catch(error => {
         usecase.emitFail(error);
+    });
+  }
+
+  static executeR<I, O>(usecase: UseCase<I, O>, args: I) {
+    usecase.emitStart();
+    usecase.doCall(args)
+        .then(result => {
+          usecase.emitResult(result);
+        }).catch(error => {
+      usecase.emitFail(error);
     });
   }
   protected abstract doCall(args: I): Promise<O>;

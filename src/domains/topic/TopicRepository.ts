@@ -9,7 +9,8 @@ import {TagName} from "../tag/Tag";
 export interface TopicReadRepository extends Repository {
   findById(topicId: TopicID): Promise<Topic>;
   findAll(): Promise<Topic[]>;
-  findUserFollows(userId: UserID): Promise<Topic[]>
+  findUserFollows(userId: UserID): Promise<Topic[]>;
+  findByTagName(tagName: TagName): Promise<Topic[]>;
 }
 
 export interface TopicWriteRepository {

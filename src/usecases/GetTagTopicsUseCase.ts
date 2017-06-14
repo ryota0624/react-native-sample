@@ -7,23 +7,26 @@
 import {User, UserID} from "../domains/user/User";
 import {UserRepository} from "../domains/user/UserRepository";
 import {TopicReadRepository} from "../domains/topic/TopicRepository";
-import {TopicID} from "../domains/topic/Topic";
+import {Topic, TopicID} from "../domains/topic/Topic";
 import {UseCase} from "./UseCase";
 import {TagRepository} from "../domains/tag/TagRepository";
-import {Tag} from "../domains/tag/Tag";
+import {Tag, TagName} from "../domains/tag/Tag";
 /**
  * Created by ryota on 2017/06/03.
  */
-export interface GetFollowTagsArgs {
-    userId: number;
+export interface GetTagTopicsUseCaseArgs {
+    tagName: string;
 }
 
-export class GetFollowTagsUseCase extends UseCase<GetFollowTagsArgs, Tag[]> {
-    constructor(private tagRepository: TagRepository) {
+export class GetTagTopicsUseCase extends UseCase<GetTagTopicsUseCaseArgs, Topic[]> {
+    constructor(
+        private topicRepository: TopicReadRepository
+    ) {
         super();
     }
 
-    protected doCall({userId}: GetFollowTagsArgs) {
-        return this.tagRepository.findUserFollows(new UserID(userId))
+    protected doCall({tagName: tagNameStr}: GetTagTopicsUseCaseArgs) {
+        const tagName = new TagName(tagNameStr);
+        return this.topicRepository.findByTagName(tagName)
     }
 }

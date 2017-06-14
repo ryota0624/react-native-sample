@@ -9,10 +9,9 @@ import {UserID} from "../user/User";
 export interface TagRepository extends Repository {
   store(tag: Tag): Promise<void>;
   bulkStore(tags: Tag[]): Promise<void>
-  findById(tagId: TagName): Promise<Tag>;
-  store(tag: Tag): Promise<void>;
+  findById(tagId: TagName, userId: UserID): Promise<Tag>;
   findAll(): Promise<Tag[]>;
-  findUserFollows(userId: UserID): Promise<Tag[]>;
-  findTopicTags(topicId: TopicID): Promise<Tag[]>;
+  findUserLoves(userId: UserID): Promise<Tag[]>;
+  findTopicTags(topicId: TopicID, userId: UserID): Promise<Tag[]>;
 
 }
