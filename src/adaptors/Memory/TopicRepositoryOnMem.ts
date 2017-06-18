@@ -22,16 +22,18 @@ let topicsMap: Map<number, Topic> = new Map(
       title: new TopicTitle("sample2"),
       createdUserId: new UserID(10),
       describe: new TopicDescribe("sample\nsamle"),
-      imageUrl: new TopicImageUrl("http://the-rich-secret.com/wp-content/uploads/2014/07/kinnun-gazou.png"),
+      imageUrl: new TopicImageUrl("https://pbs.twimg.com/profile_images/3406268893/54b7e1f981b7df7c817af48d1b96ad5e_400x400.jpeg"),
       followed: false,
     }) as Topic]
   ]
 );
 
-let topicRelTag: [TopicID, TagName][] = [];
+let topicRelTag: [TopicID, TagName][] = [
+    [new TopicID(1), new TagName("お札")]
+];
 
 export class TopicRepositoryOnMem extends Repository implements TopicReadRepository, TopicWriteRepository {
-  static readonly topicRelTag = topicRelTag;
+  static get topicRelTag() { return topicRelTag };
   store(topic: Topic, tagIds: TagName[]) {
     topicsMap.set(topic.id.value, topic);
     tagIds.forEach(tagId => {
@@ -56,6 +58,14 @@ export class TopicRepositoryOnMem extends Repository implements TopicReadReposit
       topics.push(user);
     });
     return Promise.resolve(topics);
+  }
+
+  findByTagName(tagName: TagName) {
+    const topicIds = topicRelTag.filter(([topicId, otherTagName]) => {
+      return tagName.equals(otherTagName);
+    }).map(([topicId]) => topicId);
+    const topicPromises = topicIds.map(this.findById.bind(this));
+    return Promise.all(topicPromises);
   }
 
   findUserFollows(userId: UserID) {

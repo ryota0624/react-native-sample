@@ -1,23 +1,35 @@
 import * as React from "react";
-import {View, Text, StyleSheet} from "react-native";
+import {LoveTagsImpl, LoveTagsViewContainer} from "./view/userProfile/LoveTags";
+import {SynclePage, SyncleRouter, SyncleUserProfileRouter, UserProfilePage} from "./routing/SyncleRouter";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center"
-  },
-  hello: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10,
-  }
-});
+export default class App extends React.Component<any, {router: SyncleRouter}> {
+    readly: boolean = false;
+    constructor() {
+        super();
+        const profileRouter = new SyncleUserProfileRouter(this);
+        const router = new SyncleRouter(this ,profileRouter);
+        profileRouter.registerParent(router);
+        router.render(SynclePage.Profile ,UserProfilePage.LoveTags);
+        this.state = {
+            router
+        };
+    }
 
-export default function App() {
-    return (
-    <View>
-      <Text style={styles.hello}>
-         Hello
-      </Text>
-    </View>);
+    componentDidMount() {
+        this.readly = true;
+    }
+
+    componentDidUpdate() {
+        this.state.router.registerComponent(this);
+    }
+
+    render() {
+        return (
+            this.state.router.page()
+            );
+    }
 }
+{/*<CreateTopicWidgetViewContainer viewModel={new CreateTopicWidgetImpl}/>*/}
+{/*<CreatedTopicsViewContainer viewModel={new CreatedTopicsImpl}/>*/}
+{/*<FollowedTopicsViewContainer viewModel={new FollowedTopicsImpl}/>*/}
+{/*<LoveTagsViewContainer viewModel={new LoveTagsImpl}/>*/}

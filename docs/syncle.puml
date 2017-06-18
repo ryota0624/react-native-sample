@@ -3,26 +3,30 @@
 class Tag {
     name
     loveLevel
-    followed
 }
 
 class Topic {
-    name
+    title
     describe
+    createdUser
     followed
+    tags: Tag[]
+    followers: User[]
+    followerCount
 }
 
 class User {
     name
-    followTag()
-    unFollowTag()
-    followTopic()
-    unFollowTopic()
-    createTag()
 }
 
-Tag "*" <- "1" User : follow
-Tag "*" <- "1" Topic : association
+Tag "*" <- "1" User : love
+
 Topic "*" <- "1" User : follow
 
 @enduml
+
+followTag()
+unFollowTag()
+followTopic()
+unFollowTopic()
+createTag()
