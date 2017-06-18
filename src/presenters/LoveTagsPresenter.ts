@@ -1,7 +1,6 @@
 import {Tag, TagName} from "../domains/tag/Tag";
 import {SynclePage, SyncleRouter} from "../routing/SyncleRouter";
 import {Presenter} from "./Presenter";
-import {UserLoveTagUseCase} from "../usecases/UserLoveTagUseCase";
 import {LoveTagsInteractor} from "../interactors/LoveTagsInteractor";
 
 /**
