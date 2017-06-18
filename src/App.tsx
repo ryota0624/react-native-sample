@@ -1,34 +1,18 @@
 import * as React from "react";
 import {LoveTagsImpl, LoveTagsViewContainer} from "./view/userProfile/LoveTags";
 import {SynclePage, SyncleRouter, SyncleUserProfileRouter, UserProfilePage} from "./routing/SyncleRouter";
+import {routes} from "./routing/Router";
 
-export default class App extends React.Component<any, {router: SyncleRouter}> {
-    readly: boolean = false;
+export default class App extends React.Component<any, any> {
     constructor() {
         super();
-        const profileRouter = new SyncleUserProfileRouter(this);
-        const router = new SyncleRouter(this ,profileRouter);
-        profileRouter.registerParent(router);
-        router.render(SynclePage.Profile ,UserProfilePage.LoveTags);
-        this.state = {
-            router
-        };
-    }
-
-    componentDidMount() {
-        this.readly = true;
-    }
-
-    componentDidUpdate() {
-        this.state.router.registerComponent(this);
     }
 
     render() {
-        return (
-            this.state.router.page()
-            );
+        return routes;
     }
 }
+
 {/*<CreateTopicWidgetViewContainer viewModel={new CreateTopicWidgetImpl}/>*/}
 {/*<CreatedTopicsViewContainer viewModel={new CreatedTopicsImpl}/>*/}
 {/*<FollowedTopicsViewContainer viewModel={new FollowedTopicsImpl}/>*/}
