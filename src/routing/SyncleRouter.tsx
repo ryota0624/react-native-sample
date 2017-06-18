@@ -3,10 +3,13 @@ import {FollowedTopicsImpl, FollowedTopicsViewContainer} from "../view/userProfi
 import {LoveTagsFImpl, LoveTagsImpl, LoveTagsViewContainer, LoveTagsViewF} from "../view/userProfile/LoveTags";
 import {CreatedTopicsImpl, CreatedTopicsViewContainer} from "../view/userProfile/CreatedTopicsView";
 import {HeaderImpl, HeaderViewContainer} from "../view/general/Header";
-import {Animated} from "react-native";
-import View = Animated.View;
-import {LoveTagsF} from "../viewModels/userProfile/LoveTags";
-
+import {TagName} from "../domains/tag/Tag";
+import {TagTopicsImpl, TagTopicsView, TagTopicsViewContainer} from "../view/tag/TagTopicsView";
+import {View} from "react-native";
+import {CreateTopicWidgetImpl, CreateTopicWidgetViewContainer} from "../view/widget/CreateTopicWigetView";
+import {LoveTagsInteractorImpl} from "../interactors/LoveTagsInteractor";
+import {LoveTagsPresenterImpl} from "../presenters/LoveTagsPresenter";
+import {LoveTagsView} from "../presenterViews/LoveTagsView";
 
 type Component = { forceUpdate: () => void, readly: boolean }
 
@@ -38,7 +41,8 @@ abstract class Router<Pages> {
 
 export enum SynclePage {
     Profile,
-    TagTopics
+    TagTopics,
+    CreateTag
 }
 
 export class SyncleRouter extends Router<SynclePage> {
@@ -51,13 +55,20 @@ export class SyncleRouter extends Router<SynclePage> {
         return this.userProfileRouter.render(page);
     }
 
-    // renderTagTopics(tag: Tag) {
-    //     if (!(tag instanceof Tag)) {
-    //         throw new Error(`bad payload ${tag}`);
-    //     }
-    //
-    //     return
-    // }
+    private renderCreateTag() {
+        const viewModel = new CreateTopicWidgetImpl();
+        return <CreateTopicWidgetViewContainer viewModel={viewModel}/>
+    }
+
+    private renderTagTopics(tagName: TagName) {
+        if (!(tagName instanceof TagName)) {
+            throw new Error(`bad payload ${tagName}`);
+        }
+        const viewModel = new TagTopicsImpl(tagName);
+        viewModel.registerView(TagTopicsView);
+        viewModel.getTagTopics();
+        return <TagTopicsViewContainer viewModel={viewModel} />
+    }
 
     protected _render(page: SynclePage, ...payloads: any[]): JSX.Element {
         return (
@@ -72,8 +83,10 @@ export class SyncleRouter extends Router<SynclePage> {
         switch (page) {
             case SynclePage.Profile:
                 return this.renderProfile(payloads[0]);
-            // case SynclePage.TagTopics:
-            //     return this.renderTagTopics(payloads[0]);
+            case SynclePage.TagTopics:
+                return this.renderTagTopics(payloads[0]);
+            case SynclePage.CreateTag:
+                return this.renderCreateTag();
             default: {
                 throw new Error('invalid Page')
             }
@@ -88,11 +101,25 @@ export enum UserProfilePage {
 }
 
 export class SyncleUserProfileRouter extends Router<UserProfilePage> {
+    constructor(component: Component) {
+        super(component);
+    }
+
+    parent: any;
+    registerParent(parent: any) {
+        this.parent = parent;
+    }
     private renderLoveTags() {
-        const viewModel = new LoveTagsFImpl();
+        const viewModel = new LoveTagsFImpl(this.parent);
         viewModel.getLoveTags();
         viewModel.registerView(LoveTagsViewF);
         return <LoveTagsViewContainer viewModel={viewModel}/>;
+    }
+
+    private renderLoveTags_() {
+        const interactor = new LoveTagsInteractorImpl();
+        const presenter = new LoveTagsPresenterImpl(this.parent, interactor, LoveTagsView);
+        return presenter.getView();
     }
 
     private renderFollowTopics() {

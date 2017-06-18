@@ -6,7 +6,9 @@ export default class App extends React.Component<any, {router: SyncleRouter}> {
     readly: boolean = false;
     constructor() {
         super();
-        const router = new SyncleRouter(this ,new SyncleUserProfileRouter(this));
+        const profileRouter = new SyncleUserProfileRouter(this);
+        const router = new SyncleRouter(this ,profileRouter);
+        profileRouter.registerParent(router);
         router.render(SynclePage.Profile ,UserProfilePage.LoveTags);
         this.state = {
             router

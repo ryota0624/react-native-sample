@@ -37,8 +37,6 @@ export abstract class ViewStateModel<State extends object, Actions extends objec
         this.viewUpdate = (nextState: State) => {
             this.state = nextState;
             const props: any = this.state;
-            console.log(props);
-            console.log(this.actions);
             this.view = view(props);
             this.emitChange();
         };

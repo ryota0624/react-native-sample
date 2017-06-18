@@ -6,7 +6,7 @@ import {
 } from "react-native";
 export const styles = StyleSheet.create({
     headerContainer: {
-        height: 80,
+        height: 100,
         padding: 20
     }
 });

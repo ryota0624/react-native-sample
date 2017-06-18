@@ -31,17 +31,23 @@ export function FollowedTopicsView(props: FollowedTopicsViewProps) {
             <ScrollView
                 style={styles.listView}
                 contentContainerStyle={styles.topicsContainer}>
-                {props.viewModel.topics.map(topic => <TopicView key={topic.id.value} topic={topic}/>)}
+                {props.viewModel.topics.map(topic =>
+                    <TopicView
+                        followAction={() => topic.followed ?  props.viewModel.unFollowTopic(topic.id.value) : props.viewModel.followTopic(topic.id.value)}
+                        key={topic.id.value}
+                        topic={topic}
+                    />)}
             </ScrollView>
         </View>
     );
 }
 
-export function TopicView({topic}: { topic: Topic }) {
+export function TopicView({topic, followAction}: { topic: Topic, followAction: () => void }) {
     return (
-        <View style={styles.topicViewContainer}>
+        <View onTouchStart={followAction} style={styles.topicViewContainer}>
             <Image style={styles.topicImage} source={{uri: topic.imageUrl.value}}>
                 <Text style={styles.topicTitle}>{topic.title.value}</Text>
+                <Text style={styles.topicTitle}>{topic.followed ? "followed" : "none follow"}</Text>
                 <View style={styles.topicMetaDataContainer}>
                     <Image style={styles.heartIcon} source={require('../icons/talk_heart_count_icon.png')}/>
                     <Text style={styles.heartCount}>"10"</Text>

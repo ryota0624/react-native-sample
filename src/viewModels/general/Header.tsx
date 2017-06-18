@@ -6,6 +6,11 @@ export abstract class Header extends ViewModel {
         super();
     }
 
+    transitionUserCreateTopic() {
+        this.syncleRouter.render(SynclePage.CreateTag);
+
+    }
+
     transitionUserFollowTopics() {
         this.syncleRouter.render(SynclePage.Profile, UserProfilePage.FollowTopics);
     }

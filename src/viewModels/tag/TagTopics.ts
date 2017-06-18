@@ -7,33 +7,35 @@ import {TopicReadRepository, TopicWriteRepository} from "../../domains/topic/Top
 import {UserRepository} from "../../domains/user/UserRepository";
 import {TagRepository} from "../../domains/tag/TagRepository";
 import {GetTagTopicsUseCase, GetTagTopicsUseCaseArgs} from "../../usecases/GetTagTopicsUseCase";
+import {TagName} from "../../domains/tag/Tag";
 /**
  * Created by ryota on 2017/06/14.
  */
 
-interface TagTopicsState {
+export interface TagTopicsState {
+    tagName: TagName
     topics: Topic[],
     loading: Loading
 }
 
-interface TagTopicsActions {
+export interface TagTopicsActions {
     followTopic: (topicIdNum: number) => void,
     unFollowTopic: (topicIdNum: number) => void
 }
 
-export abstract class LoveTagsF extends ViewStateModel<TagTopicsState, TagTopicsActions> implements TagTopicsActions {
+export abstract class TagTopics extends ViewStateModel<TagTopicsState, TagTopicsActions> implements TagTopicsActions {
     abstract tagRepository: TagRepository;
     abstract userRepository: UserRepository;
     abstract topicReadRepository: TopicReadRepository;
-
     abstract userId: number;
 
-    constructor() {
+    constructor(private tagName: TagName) {
         super();
     }
 
     get initialState() {
         return {
+            tagName: this.tagName,
             topics: [],
             loading: Loading.Initial,
         }
@@ -46,9 +48,9 @@ export abstract class LoveTagsF extends ViewStateModel<TagTopicsState, TagTopics
         }
     }
 
-    getTagTopics = (tagNameStr: string) => {
+    getTagTopics = () => {
       const useCase = new GetTagTopicsUseCase(this.topicReadRepository);
-      UseCase.executeR<GetTagTopicsUseCaseArgs ,Topic[]>(useCase, {tagName: tagNameStr});
+      UseCase.executeR<GetTagTopicsUseCaseArgs ,Topic[]>(useCase, {tagName: this.tagName});
       useCase.onResult(topics => {
          this.updater((state, update) => {
            update({...state, topics});

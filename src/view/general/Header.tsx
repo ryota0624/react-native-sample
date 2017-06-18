@@ -11,6 +11,7 @@ function HeaderView(props: {viewModel: Header}) {
             <Text onPress={() => props.viewModel.transitionUserFollowTopics()}>followTopics</Text>
             <Text onPress={() => props.viewModel.transitionUserLoveTags()}>loveTags</Text>
             <Text onPress={() => props.viewModel.transitionUserCreatedTopics()}>createdTopics</Text>
+            <Text onPress={() => props.viewModel.transitionUserCreateTopic()}>createTopic</Text>
         </View>);
 }
 interface HeaderViewContainerProps {

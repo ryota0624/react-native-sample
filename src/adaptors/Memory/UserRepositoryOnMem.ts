@@ -35,7 +35,12 @@ export class UserRepositoryOnMem extends Repository implements UserRepository {
           return user.id.value === userIdInt && topicIdInt === topicIdOrTag.value;
         })) {
         userFollowTopic.push([user.id.value, topicIdOrTag.value]);
+      } else {
+        userFollowTopic = userFollowTopic.filter(([userIdInt, topicIdInt]) => {
+          return !(user.id.value === userIdInt && topicIdInt === topicIdOrTag.value);
+        });
       }
+      console.log(userFollowTopic)
     } else if (topicIdOrTag instanceof Tag) {
       userLoveTags = userLoveTags.map(([userId, {tagName, loveLevel}]) => {
         if (userId === user.id.value && tagName === topicIdOrTag.id.value) {

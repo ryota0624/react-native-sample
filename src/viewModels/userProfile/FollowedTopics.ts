@@ -20,12 +20,13 @@ export abstract class FollowedTopics extends ViewModel {
         const useCase = new UserFollowTopicUseCase(this.topicRepository, this.userRepository);
         UseCase.execute({userId: this.userId, topicId: topicIdNum} ,useCase);
         useCase.onResult(updatedTopicId => {
-            this.topics.map(topic => {
+            this.topics = this.topics.map(topic => {
                 if (topic.id.equals(updatedTopicId)) {
                     return Topic.factory({...topic, followed: true});
                 }
                 return topic;
-            });
+            }) as any;
+            this.viewUpdate();
         });
     };
 
@@ -33,17 +34,17 @@ export abstract class FollowedTopics extends ViewModel {
         const useCase = new UserUnFollowTopicUseCase(this.topicRepository, this.userRepository);
         UseCase.execute({userId: this.userId, topicId: topicIdNum} ,useCase);
         useCase.onResult(updatedTopicId => {
-            this.topics.map(topic => {
+            this.topics = this.topics.map(topic => {
                 if (topic.id.equals(updatedTopicId)) {
-                    return Topic.factory({...topic, followed: true});
+                    return Topic.factory({...topic, followed: false});
                 }
                 return topic;
-            });
+            }) as any;
+            this.viewUpdate();
         });
     };
 
     getFollowedTopics = () => {
-        console.log("getTopics");
         const useCase = new GetUserFollowTopics(this.topicRepository, this.userRepository);
         UseCase.execute({userId:this.userId} ,useCase);
         useCase.onStart(() => {
@@ -52,7 +53,6 @@ export abstract class FollowedTopics extends ViewModel {
         });
 
         useCase.onResult(topics => {
-            console.log(topics)
             this.topics = topics;
             this.loading = Loading.Fulfill;
             this.viewUpdate();

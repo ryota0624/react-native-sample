@@ -3,14 +3,16 @@
 class Tag {
     name
     loveLevel
-    followed
 }
 
 class Topic {
-    name
+    title
     describe
+    createdUser
     followed
     tags: Tag[]
+    followers: User[]
+    followerCount
 }
 
 class User {

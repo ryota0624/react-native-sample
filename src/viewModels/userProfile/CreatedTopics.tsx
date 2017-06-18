@@ -17,12 +17,14 @@ export abstract class CreatedTopics extends ViewModel {
         const useCase = new UserFollowTopicUseCase(this.topicRepository, this.userRepository);
         UseCase.execute({userId: this.userId, topicId: topicIdNum} ,useCase);
         useCase.onResult(updatedTopicId => {
-            this.topics.map(topic => {
+            this.topics  = this.topics.map(topic => {
                if (topic.id.equals(updatedTopicId)) {
                    return Topic.factory({...topic, followed: true});
                }
                return topic;
-            });
+            })as any;
+
+            this.viewUpdate();
         });
     };
 
@@ -30,12 +32,14 @@ export abstract class CreatedTopics extends ViewModel {
         const useCase = new UserUnFollowTopicUseCase(this.topicRepository, this.userRepository);
         UseCase.execute({userId: this.userId, topicId: topicIdNum} ,useCase);
         useCase.onResult(updatedTopicId => {
-            this.topics.map(topic => {
+            this.topics = this.topics.map(topic => {
                 if (topic.id.equals(updatedTopicId)) {
-                    return Topic.factory({...topic, followed: true});
+                    return Topic.factory({...topic, followed: false});
                 }
                 return topic;
-            });
+            })as any;
+
+            this.viewUpdate();
         });
     };
 

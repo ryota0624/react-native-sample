@@ -5,6 +5,7 @@ import {GetUserLoveTagsUseCase} from "../../usecases/GetUserLoveTagsUseCase";
 import {TagRepository} from "../../domains/tag/TagRepository";
 import {Tag, TagName} from "../../domains/tag/Tag";
 import {UserLoveTagArgs, UserLoveTagUseCase} from "../../usecases/UserLoveTagUseCase";
+import {SynclePage, SyncleRouter} from "../../routing/SyncleRouter";
 /**
  * Created by ryota on 2017/06/10.
  */
@@ -20,6 +21,10 @@ export interface LoveTagsAction {
 }
 
 export abstract class LoveTags extends ViewModel {
+    constructor(private syncleRouter: SyncleRouter) {
+        super();
+    }
+
     abstract tagRepository: TagRepository;
     abstract userRepository: UserRepository;
     abstract userId: number;
@@ -46,12 +51,10 @@ export abstract class LoveTags extends ViewModel {
     };
 
     transitionToTagTopics = (tagNameStr: string) => {
-        console.log('wip transition to')
+        this.syncleRouter.render(SynclePage.TagTopics, new TagName(tagNameStr));
     };
 
     getLoveTags = () => {
-        console.log("getTags");
-
         const useCase = new GetUserLoveTagsUseCase(this.tagRepository);
         UseCase.execute({userId: this.userId}, useCase);
         useCase.onStart(() => {
@@ -72,8 +75,7 @@ export abstract class LoveTagsF extends ViewStateModel<LoveTagsState, LoveTagsAc
     abstract tagRepository: TagRepository;
     abstract userRepository: UserRepository;
     abstract userId: number;
-
-    constructor() {
+    constructor(private syncleRouter: SyncleRouter) {
         super();
     }
 
@@ -92,7 +94,7 @@ export abstract class LoveTagsF extends ViewStateModel<LoveTagsState, LoveTagsAc
     }
 
     transitionToTagTopics = (tagNameStr: string) => {
-        console.log('wip transition to')
+        this.syncleRouter.render(SynclePage.TagTopics, new TagName(tagNameStr));
     };
 
     loveTag = (tagNameStr: string) => {

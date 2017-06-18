@@ -15,7 +15,7 @@ import {Tag, TagName} from "../domains/tag/Tag";
  * Created by ryota on 2017/06/03.
  */
 export interface GetTagTopicsUseCaseArgs {
-    tagName: string;
+    tagName: TagName;
 }
 
 export class GetTagTopicsUseCase extends UseCase<GetTagTopicsUseCaseArgs, Topic[]> {
@@ -25,8 +25,7 @@ export class GetTagTopicsUseCase extends UseCase<GetTagTopicsUseCaseArgs, Topic[
         super();
     }
 
-    protected doCall({tagName: tagNameStr}: GetTagTopicsUseCaseArgs) {
-        const tagName = new TagName(tagNameStr);
+    protected doCall({tagName}: GetTagTopicsUseCaseArgs) {
         return this.topicRepository.findByTagName(tagName)
     }
 }
