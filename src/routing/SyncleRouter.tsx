@@ -1,6 +1,6 @@
 import * as React from "react";
 import {FollowedTopicsImpl, FollowedTopicsViewContainer} from "../view/userProfile/FollowedTopicsView";
-import {LoveTagsFImpl, LoveTagsImpl, LoveTagsViewContainer, LoveTagsViewF} from "../view/userProfile/LoveTags";
+// import {LoveTagsFImpl, LoveTagsImpl, LoveTagsViewContainer, LoveTagsViewF} from "../view/userProfile/LoveTags";
 import {CreatedTopicsImpl, CreatedTopicsViewContainer} from "../view/userProfile/CreatedTopicsView";
 import {HeaderImpl, HeaderViewContainer} from "../view/general/Header";
 import {TagName} from "../domains/tag/Tag";
@@ -10,6 +10,7 @@ import {CreateTopicWidgetImpl, CreateTopicWidgetViewContainer} from "../view/wid
 import {LoveTagsInteractorImpl} from "../interactors/LoveTagsInteractor";
 import {LoveTagsPresenterImpl} from "../presenters/LoveTagsPresenter";
 import {LoveTagsView} from "../presenterViews/LoveTagsView";
+import {PresenterContainer} from "../presenterViews/PresenterContainer";
 
 type Component = { forceUpdate: () => void, readly: boolean }
 
@@ -109,17 +110,18 @@ export class SyncleUserProfileRouter extends Router<UserProfilePage> {
     registerParent(parent: any) {
         this.parent = parent;
     }
-    private renderLoveTags() {
-        const viewModel = new LoveTagsFImpl(this.parent);
-        viewModel.getLoveTags();
-        viewModel.registerView(LoveTagsViewF);
-        return <LoveTagsViewContainer viewModel={viewModel}/>;
-    }
+    // private renderLoveTags() {
+    //     const viewModel = new LoveTagsFImpl(this.parent);
+    //     viewModel.getLoveTags();
+    //     viewModel.registerView(LoveTagsViewF);
+    //     return <LoveTagsViewContainer viewModel={viewModel}/>;
+    // }
 
-    private renderLoveTags_() {
+    private renderLoveTags() {
         const interactor = new LoveTagsInteractorImpl();
         const presenter = new LoveTagsPresenterImpl(this.parent, interactor, LoveTagsView);
-        return presenter.getView();
+        presenter.getLoveTags();
+        return <PresenterContainer presenter={presenter} />
     }
 
     private renderFollowTopics() {

@@ -18,8 +18,13 @@ export abstract class Presenter<State extends object> extends EventEmitter {
     getView = () => {
         return this.view(Object.assign({}, this.state, {presenter: this}));
     };
-    protected onChange = (fn: (view: JSX.Element) => void) => {
+
+    onChange = (fn: (view: JSX.Element) => void) => {
         this.addListener('onChange', fn);
+    };
+
+    removeChange = (fn: (view: JSX.Element) => void) => {
+      this.removeListener('onChange', fn);
     };
     protected emitChange = () => {
         this.emit('onChange', this.getView());
@@ -27,5 +32,7 @@ export abstract class Presenter<State extends object> extends EventEmitter {
 
     protected updater = (fn: (state: Readonly<State>, update: (state: State) => void) => void) => {
         fn(this.state || Object.assign({}, this.getInitialState), this.viewUpdate);
-    }
+    };
+
+    onViewAppear?: () => void;
 }
