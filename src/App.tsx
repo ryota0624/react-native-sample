@@ -1,7 +1,5 @@
 import * as React from "react";
-import {LoveTagsImpl, LoveTagsViewContainer} from "./view/userProfile/LoveTags";
-import {SynclePage, SyncleRouter, SyncleUserProfileRouter, UserProfilePage} from "./routing/SyncleRouter";
-import {routes} from "./routing/Router";
+import {routes} from "./routing/routes";
 
 export default class App extends React.Component<any, any> {
     constructor() {

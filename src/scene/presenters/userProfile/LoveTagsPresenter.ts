@@ -1,7 +1,7 @@
-import {Tag, TagName} from "../domains/tag/Tag";
-import {SynclePage, SyncleRouter} from "../routing/SyncleRouter";
-import {Presenter} from "./Presenter";
-import {LoveTagsInteractor} from "../interactors/LoveTagsInteractor";
+import {Tag, TagName} from "../../../domains/tag/Tag";
+import {SyncleRouter} from "../../../routing/Router";
+import {Presenter} from "../Presenter";
+import {LoveTagsInteractor} from "../../interactors/userProfile/LoveTagsInteractor";
 
 /**
  * Created by ryota on 2017/06/18.
@@ -19,8 +19,8 @@ export interface LoveTagsViewProps {
 export type LoveTagsViewType = (props: LoveTagsViewProps) => JSX.Element
 
 export class LoveTagsPresenterImpl extends Presenter<{ tags: Tag[] }> implements LoveTagsPresenter {
-    constructor(private syncleRouter: SyncleRouter,
-                private loveTagsInteractor: LoveTagsInteractor,
+    constructor(private loveTagsInteractor: LoveTagsInteractor,
+                private router: SyncleRouter,
                 view: LoveTagsViewType,) {
         super(view);
     }
@@ -41,7 +41,7 @@ export class LoveTagsPresenterImpl extends Presenter<{ tags: Tag[] }> implements
     }
 
     transitionToTagTopics = (tagName: TagName) => {
-        this.syncleRouter.render(SynclePage.TagTopics, tagName);
+        this.router.moveTagTopics(tagName);
     };
 
     changeLoveLevel = (tagName: TagName) => {
@@ -63,5 +63,5 @@ export class LoveTagsPresenterImpl extends Presenter<{ tags: Tag[] }> implements
     onViewAppear = () => {
         this.getLoveTags();
     }
-
 }
+

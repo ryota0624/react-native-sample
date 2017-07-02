@@ -34,7 +34,7 @@ function topicDto2Entity(createUserId: number, dto: TopicDTO): ValidationResult<
 export interface CreateTopicArgs {
   userId: number;
   topicDto: TopicDTO;
-  tagNames: string[]
+  tagNames: TagName[]
 }
 
 
@@ -54,8 +54,8 @@ export class CreateTopicUseCase extends UseCase<CreateTopicArgs, Topic> {
     }).then(([topic]) => topic);
   }
 
-  private createTag(tagName: string): Tag {
-    return Tag.factory({id: new TagName(tagName), loveLevel: LoveLevel.One})
+  private createTag(tagName: TagName): Tag {
+    return Tag.factory({id: tagName, loveLevel: LoveLevel.One})
   }
 
   private createTopic(userId: number, topicDto: TopicDTO): Promise<Topic> {

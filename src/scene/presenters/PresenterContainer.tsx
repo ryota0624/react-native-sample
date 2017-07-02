@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Presenter} from "../presenters/Presenter";
+import {Presenter} from "./Presenter";
 
 export class PresenterContainer extends React.Component<{presenter: Presenter<any>}, {currentView: JSX.Element}> {
     constructor(props: any) {

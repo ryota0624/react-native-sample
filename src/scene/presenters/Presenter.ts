@@ -5,18 +5,22 @@ import {EventEmitter} from 'eventemitter3';
 export abstract class Presenter<State extends object> extends EventEmitter {
     constructor(protected view: (props: State & {presenter: Presenter<State>}) => JSX.Element) {
         super();
-        this.state = this.getInitialState;
+        this._state = this.getInitialState;
     }
     abstract get getInitialState(): State;
 
     private viewUpdate = (nextState: State) => {
-        this.state = nextState;
+        this._state = Object.assign({}, this._state, nextState);
         this.emitChange();
     };
-    private state: State;
+    private _state: State;
+
+    get state(): Readonly<State> {
+        return this._state;
+    }
 
     getView = () => {
-        return this.view(Object.assign({}, this.state, {presenter: this}));
+        return this.view(Object.assign({}, this._state, {presenter: this}));
     };
 
     onChange = (fn: (view: JSX.Element) => void) => {
@@ -30,8 +34,8 @@ export abstract class Presenter<State extends object> extends EventEmitter {
         this.emit('onChange', this.getView());
     };
 
-    protected updater = (fn: (state: Readonly<State>, update: (state: State) => void) => void) => {
-        fn(this.state || Object.assign({}, this.getInitialState), this.viewUpdate);
+    protected updater = (fn: (state: Readonly<State>, update: (state: Partial<State>) => void) => void) => {
+        fn(this._state || Object.assign({}, this.getInitialState), this.viewUpdate);
     };
 
     onViewAppear?: () => void;

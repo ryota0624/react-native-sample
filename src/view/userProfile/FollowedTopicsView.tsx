@@ -2,22 +2,16 @@
  * Created by ryota on 2017/06/10.
  */
 import * as React from "react";
-import {FollowedTopics} from "../../viewModels/userProfile/FollowedTopics";
+import {FollowedTopicsViewProps} from "../../scene/presenters/userProfile/FollowedTopicsPresenter";
 import {
-    View, Text, StyleSheet, TextInput, Button, Picker, ListView, ListViewDataSource,
+    Image, View, Text, StyleSheet, TextInput, Button, Picker, ListView, ListViewDataSource,
     Dimensions, Animated, TouchableOpacity, ScrollView,
 } from "react-native";
 import {styles} from "./styles";
-import Image = Animated.Image;
+
 import {Topic} from "../../domains/topic/Topic";
-import UserRepositoryOnMem from "../../adaptors/Memory/UserRepositoryOnMem";
-import TopicRepositoryOnMem from "../../adaptors/Memory/TopicRepositoryOnMem";
-import {ViewContainer} from "../Container";
 
 
-interface FollowedTopicsViewProps {
-    viewModel: Readonly<FollowedTopics>
-}
 export function FollowedTopicsView(props: FollowedTopicsViewProps) {
     return (
         <View style={styles.timelineContainer}>
@@ -26,14 +20,16 @@ export function FollowedTopicsView(props: FollowedTopicsViewProps) {
                 <TouchableOpacity style={styles.followedTopicsLabel}>
                     <Text style={styles.tagText}>{"❤️トピック"}</Text>
                 </TouchableOpacity>
-                <Text style={styles.tagTopicsCountText}>{`${props.viewModel.topics.length}トピック`}</Text>
+                <Text style={styles.tagTopicsCountText}>{`${props.topics.length}トピック`}</Text>
             </View>
             <ScrollView
                 style={styles.listView}
                 contentContainerStyle={styles.topicsContainer}>
-                {props.viewModel.topics.map(topic =>
+                {props.topics.map(topic =>
                     <TopicView
-                        followAction={() => topic.followed ?  props.viewModel.unFollowTopic(topic.id.value) : props.viewModel.followTopic(topic.id.value)}
+                        followAction={() => topic.followed ?
+                            props.presenter.unFollowTopic(topic.id.value) :
+                            props.presenter.followTopic(topic.id.value)}
                         key={topic.id.value}
                         topic={topic}
                     />)}
@@ -57,23 +53,4 @@ export function TopicView({topic, followAction}: { topic: Topic, followAction: (
             </Image>
         </View>
     );
-}
-
-interface FollowedTopicsViewContainerProps {
-    viewModel: Readonly<FollowedTopics>
-}
-
-export class FollowedTopicsViewContainer extends ViewContainer<FollowedTopics, FollowedTopicsViewContainerProps, {}> {
-    render() {
-        const {viewModel} = this.props;
-        return (
-            <FollowedTopicsView viewModel={viewModel}/>
-        );
-    }
-}
-
-export class FollowedTopicsImpl extends FollowedTopics {
-    userId = 10;
-    userRepository = UserRepositoryOnMem;
-    topicRepository = TopicRepositoryOnMem
 }

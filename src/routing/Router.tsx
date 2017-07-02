@@ -1,19 +1,11 @@
 import * as React from 'react';
-import {View, StyleSheet, Text} from "react-native";
-import {PresenterContainer} from "../presenterViews/PresenterContainer";
-import {LoveTagsView} from "../presenterViews/LoveTagsView";
-import {LoveTagsPresenterImpl} from "../presenters/LoveTagsPresenter";
-import {LoveTagsInteractorImpl} from "../interactors/LoveTagsInteractor";
 const {
     NativeRouter,
     Route,
-    Router,
-    ...rest
 } = require('react-router-native');
-import {Switch} from "react-router";
-
-
+import {TagName} from "../domains/tag/Tag";
 const StackRoute = require('react-router-native/experimental/StackRoute').default;
+import * as H from 'history';
 
 export enum SyncleRoute {
     TagTopics,
@@ -23,29 +15,41 @@ export enum SyncleRoute {
     CreatedTopics
 }
 
-export const routes = (
-    <NativeRouter>
-        <StackRoute path="/" isRoot={true}
-                    renderTitle={() => (<Text>hoghoge</Text>)}
-                    renderContent={(props: any) => {
-                        return (
-                            <Switch>
-                                <Route path="/" render={(props: any) => {
-                                    const interactor = new LoveTagsInteractorImpl();
-                                    const presenter = new LoveTagsPresenterImpl({} as any, interactor, LoveTagsView);
-                                    return <PresenterContainer presenter={presenter}/>
-                                }}/>
+export interface SyncleRouter {
+    moveTagTopics(tag: TagName) :void;
+    moveCreateTopic(): void;
+    moveLoveTags(): void;
+    moveFollowTopics(): void;
+    moveCreatedTopics(): void;
+    goBack(): void;
+}
 
-                                <Route path="/" render={(props: any) => {
-                                    const interactor = new LoveTagsInteractorImpl();
-                                    const presenter = new LoveTagsPresenterImpl({} as any, interactor, LoveTagsView);
-                                    return <PresenterContainer presenter={presenter}/>
-                                }}/>
+export class SyncleRouterReact implements SyncleRouter {
+    constructor(
+        private history: H.History) {
+    }
 
-                            </Switch>
-                        );
-                    }}
-        >
-        </StackRoute>
-    </NativeRouter>
-);
+    moveTagTopics(tagName: TagName) {
+        this.history.push("/tag/topics", {tagName});
+    }
+
+    moveCreateTopic() {
+        this.history.push("/createTopic");
+    }
+
+    moveCreatedTopics() {
+        this.history.push("/me/createdTopics");
+    }
+
+    moveFollowTopics() {
+        this.history.push("/me/followTopics");
+    }
+
+    moveLoveTags() {
+        this.history.push("/me/loveTags");
+    }
+
+    goBack() {
+        this.history.goBack();
+    }
+}

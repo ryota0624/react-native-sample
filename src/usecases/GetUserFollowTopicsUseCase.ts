@@ -9,10 +9,9 @@ import {UseCase} from "./UseCase";
 
 export interface UserFollowTopicArgs {
   userId: number;
-  topicId: number;
 }
 
-export class GetUserFollowTopics extends UseCase<UserFollowTopicArgs, Topic[]> {
+export class GetUserFollowTopicsUseCase extends UseCase<UserFollowTopicArgs, Topic[]> {
   constructor(private topicRepository: TopicReadRepository, private userRepository: UserRepository) {
     super();
   }
@@ -24,5 +23,5 @@ export class GetUserFollowTopics extends UseCase<UserFollowTopicArgs, Topic[]> {
 }
 
 export interface UseGetUserFollowTopic {
-  getUserFollowTopics: GetUserFollowTopics;
+  getUserFollowTopics: GetUserFollowTopicsUseCase;
 }
