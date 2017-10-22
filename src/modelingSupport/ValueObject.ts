@@ -13,10 +13,14 @@ export class Value<T extends number|string|boolean> {
 }
 
 interface ValueObjectInterface<T> {
-  copy<C>(args: Partial<T>): C;
+  copy(args: Partial<T>): ValueObjectInterface<T>;
 }
 
-export function valueObject<T>(defaultValue: T): new(args: T) => Readonly<T&ValueObjectInterface<T>> {
+export class StringValue extends Value<string> {}
+export class NumberValue extends Value<number> {}
+export class BoolValue  extends Value<boolean> {}
+
+export function valueObject<T>(defaultValue: T): new(args: T) => T&ValueObjectInterface<T> {
    const Klass = (class {
     copy(args: Partial<this>): this {
       let instance = new Klass(Object.assign({}, this, args)) as any;

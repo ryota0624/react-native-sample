@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.65",
-    "@types/react-router": "^4.0.11",
+    "@types/react-router": "4.0.11",
     "eventemitter3": "^2.0.3",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
@@ -20,15 +20,14 @@
     "ts-node": "^3.0.6"
   },
   "devDependencies": {
-    "@types/node": "^7.0.22",
-    "@types/react": "^15.0.24",
-    "@types/react-dom": "^15.5.0",
-    "@types/react-native": "^0.44.3",
+    "@types/react": "15.0.24",
+    "@types/react-dom": "15.5.0",
+    "@types/react-native": "0.44.3",
     "babel-jest": "20.0.3",
     "babel-preset-react-native": "1.9.2",
     "jest": "20.0.3",
     "react-test-renderer": "16.0.0-alpha.6",
-    "typescript": "^2.3.0"
+    "typescript": "2.3.0"
   },
   "jest": {
     "preset": "react-native"
